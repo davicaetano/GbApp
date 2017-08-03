@@ -26,6 +26,10 @@ ext {
     gson = '2.6.2'
     retrofit = '2.2.0'
     okhttp = '3.7.0'
+
+    roboelectric = '3.3.2'
+    mockwebserver = '3.7.0'
+    apacheCommons = '2.4'
 }
 
 dependencies {
@@ -34,6 +38,10 @@ dependencies {
     implementation "com.google.code.gson:gson:$gson"
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+
+    testImplementation "org.robolectric:robolectric:$roboelectric"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver"
+    testImplementation "org.apache.directory.studio:org.apache.commons.io:$apacheCommons"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.0'

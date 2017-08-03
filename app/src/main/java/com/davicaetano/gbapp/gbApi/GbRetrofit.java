@@ -24,36 +24,52 @@ public class GbRetrofit {
 
     public GbRetrofit() {
         this.retrofit = new Retrofit.Builder()
-                .baseUrl(GB_URL)
+                .baseUrl(getGbUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         gbService = retrofit.create(GbService.class);
     }
 
-    public void call() {
+    public String getGbUrl() {
+        return GB_URL;
+    }
+
+    public void call(final GbCallback<GbApiModel> callback, boolean async) {
         Call<GbApiModel> gbServiceCall = gbService.callGbApi();
-        gbServiceCall.enqueue(new Callback<GbApiModel>() {
-            @Override
-            public void onResponse(Call<GbApiModel> call, Response<GbApiModel> response) {
-                Log.v(TAG, "onResponse");
-                if (response.body() != null && response.body().getTotal() != null) {
-                    Log.v(TAG, "Total: " + response.body().getTotal());
-                }
-                if (response.body() != null && response.body().getData() != null)
-                for (GbEvent event: response.body().getData()) {
-                    if (event != null) {
-                        Log.v(TAG, event.toString());
+
+        if (async) {
+            gbServiceCall.enqueue(new Callback<GbApiModel>() {
+                @Override
+                public void onResponse(Call<GbApiModel> call, Response<GbApiModel> response) {
+                    Log.v(TAG, "onResponse");
+                    if (response.body() != null && response.body().getTotal() != null) {
+                        Log.v(TAG, "Total: " + response.body().getTotal());
+                    }
+                    if (response.body() != null && response.body().getData() != null) {
+                        for (GbEvent event : response.body().getData()) {
+                            if (event != null) {
+                                Log.v(TAG, event.toString());
+                            }
+                        }
                     }
                 }
+
+                @Override
+                public void onFailure(Call<GbApiModel> call, Throwable t) {
+                    Log.v(TAG, "onFailure");
+                    Log.v(TAG, t.getMessage());
+                    callback.onFailure(t);
+                }
+            });
+        } else {//Sync is used by tests
+            try {
+                callback.onSuccess(gbServiceCall.execute().body());
+            } catch (Exception e) {
+                callback.onFailure(new Throwable());
             }
 
-            @Override
-            public void onFailure(Call<GbApiModel> call, Throwable t) {
-                Log.v(TAG, "onFailure");
-                Log.v(TAG, t.getMessage());
-            }
-        });
+        }
     }
 
 

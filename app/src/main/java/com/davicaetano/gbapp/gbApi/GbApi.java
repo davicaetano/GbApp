@@ -14,8 +14,8 @@ public class GbApi {
         this.gbRetrofit = gbRetrofit;
     }
 
-    public void callGbApi() {
-        gbRetrofit.call();
+    public void callGbApi(GbCallback callback, boolean async) {
+        gbRetrofit.call(callback, async);
     }
 
 }

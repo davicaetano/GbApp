@@ -27,7 +27,7 @@ public class GbEvent {
     @SerializedName("url") @Expose
     private String url;
 
-    @SerializedName("gbVenue") @Expose
+    @SerializedName("venue") @Expose
     private GbVenue gbVenue;
 
     @SerializedName("icon") @Expose
