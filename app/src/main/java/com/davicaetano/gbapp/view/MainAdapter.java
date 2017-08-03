@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.davicaetano.gbapp.R;
 import com.davicaetano.gbapp.gbModel.GbEvent;
 
@@ -51,6 +52,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.EventViewHolde
 
         eventViewHolder.eventEndDate.setVisibility(gbEventMain.getEndDateVisibility());
         eventViewHolder.eventEndDate.setText(gbEventMain.getEndDate());
+
+        Glide.with(eventViewHolder.eventLogo.getContext())
+                .clear(eventViewHolder.eventLogo);
+        if (gbEventMain.hasImage()) {
+            Glide.with(eventViewHolder.eventLogo.getContext())
+                    .load(gbEventMain.getImageUrl())
+                    .into(eventViewHolder.eventLogo);
+        }
 
     }
 
