@@ -53,6 +53,7 @@ public class GbRetrofit {
                             }
                         }
                     }
+                    callback.onSuccess(response.body());
                 }
 
                 @Override

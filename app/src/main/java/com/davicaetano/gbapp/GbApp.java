@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.davicaetano.gbapp.gbApi.GbApi;
 import com.davicaetano.gbapp.gbApi.GbRetrofit;
+import com.davicaetano.gbapp.gbData.GbData;
 import com.davicaetano.gbapp.view.MainActivity;
 import com.davicaetano.gbapp.view.MainPresenter;
 
@@ -14,10 +15,11 @@ import com.davicaetano.gbapp.view.MainPresenter;
 public class GbApp extends Application {
     private GbApi gbApi;
     private GbRetrofit gbRetrofit;
+    private GbData gbData;
 
     //The code below does DI. I didn't implement Dagger because the scope of the App is small.
     public MainPresenter getMainPresenter(MainActivity mainActivity) {
-        return new MainPresenter(mainActivity, getGbApi());
+        return new MainPresenter(mainActivity, getGbApi(), gbData());
     }
 
     private GbApi getGbApi() {
@@ -32,5 +34,12 @@ public class GbApp extends Application {
             gbRetrofit = new GbRetrofit();
         }
         return gbRetrofit;
+    }
+
+    private GbData gbData() {
+        if (gbData == null) {
+            gbData = new GbData();
+        }
+        return gbData;
     }
 }
